@@ -1,9 +1,8 @@
 """
-Hierarchical macro F1 metric for the CMI 2025 Challenge.
+Hierarchical macro F1 metric for gesture classification.
 
-This script defines a single entry point `score(solution, submission, row_id_column_name)`
-that the Kaggle metrics orchestrator will call.
-It performs validation on submission IDs and computes a combined binary & multiclass F1 score.
+This script defines a single entry point `score(solution, submission, row_id_column_name)`.
+It validates the predicted gestures and computes a combined binary & multiclass F1 score.
 """
 
 import pandas as pd
@@ -11,12 +10,12 @@ from sklearn.metrics import f1_score
 
 
 class ParticipantVisibleError(Exception):
-    """Errors raised here will be shown directly to the competitor."""
+    """Raised when the inputs to the metric are invalid."""
     pass
 
 
 class CompetitionMetric:
-    """Hierarchical macro F1 for the CMI 2025 challenge."""
+    """Hierarchical macro F1 for gesture classification."""
     def __init__(self):
         self.target_gestures = [
             'Above ear - pull hair',
@@ -87,7 +86,7 @@ def score(
     row_id_column_name: str
 ) -> float:
     """
-    Compute hierarchical macro F1 for the CMI 2025 challenge.
+    Compute hierarchical macro F1 for gesture classification.
 
     Expected input:
       - solution and submission as pandas.DataFrame
