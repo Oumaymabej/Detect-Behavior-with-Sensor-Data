@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1000" width="1100" height="1000" role="img" aria-labelledby="title desc">
+  <title id="title">Multimodal phase-aware gesture recognition architecture</title>
+  <desc id="desc">IMU and time-of-flight sensor branches are fused per timestep, split into three behavior phases by attention pooling, and classified by dense layers.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-phase" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: "Segoe UI", Helvetica, Arial, sans-serif; fill: #0f172a; }
+    .h1 { font-size: 24px; font-weight: 700; }
+    .sub { font-size: 14px; fill: #475569; }
+    .lane { font-size: 13px; font-weight: 700; letter-spacing: .06em; }
+    .t { font-size: 14px; font-weight: 600; text-anchor: middle; }
+    .s { font-size: 12.5px; fill: #334155; text-anchor: middle; }
+    .l { font-size: 13px; fill: #334155; }
+    .lt { font-size: 14px; font-weight: 700; }
+    .note { font-size: 12.5px; fill: #6d28d9; font-weight: 600; text-anchor: middle; }
+    .flow { fill: none; stroke: #475569; stroke-width: 1.6; marker-end: url(#arrow); }
+    .line { fill: none; stroke: #475569; stroke-width: 1.6; }
+    .phase { fill: none; stroke: #7c3aed; stroke-width: 1.8; stroke-dasharray: 6 4; marker-end: url(#arrow-phase); }
+    .imu { fill: #ccfbf1; stroke: #0f766e; stroke-width: 1.3; }
+    .tof { fill: #fef3c7; stroke: #b45309; stroke-width: 1.3; }
+    .fuse { fill: #e0e7ff; stroke: #4338ca; stroke-width: 1.3; }
+    .ph { fill: #ede9fe; stroke: #7c3aed; stroke-width: 1.3; }
+    .out { fill: #dcfce7; stroke: #15803d; stroke-width: 1.6; }
+  </style>
+
+  <rect width="1100" height="1000" fill="#ffffff"/>
+
+  <text class="h1" x="30" y="42">Multimodal Phase-Aware Gesture Network</text>
+  <text class="sub" x="30" y="66">Shown: the "all" variant. IMU-only variants drop the ToF branch and pool 256-dim features instead of 288.</text>
+
+  <!-- IMU lane -->
+  <rect x="30" y="85" width="600" height="365" rx="14" fill="#f0fdfa" stroke="#99f6e4"/>
+  <text class="lane" x="50" y="110" fill="#0f766e" style="fill:#0f766e">IMU BRANCH</text>
+
+  <rect class="imu" x="50" y="125" width="170" height="62" rx="8"/>
+  <text class="t" x="135" y="151">Acceleration (3)</text>
+  <text class="s" x="135" y="171">raw x, y, z</text>
+  <rect class="imu" x="245" y="125" width="170" height="62" rx="8"/>
+  <text class="t" x="330" y="151">Rotation (9)</text>
+  <text class="s" x="330" y="171">6D + angular velocity</text>
+  <rect class="imu" x="440" y="125" width="170" height="62" rx="8"/>
+  <text class="t" x="525" y="151">Linear accel (3)</text>
+  <text class="s" x="525" y="171">gravity removed</text>
+
+  <path class="flow" d="M135 187 V215"/>
+  <path class="flow" d="M330 187 V215"/>
+  <path class="flow" d="M525 187 V215"/>
+
+  <rect class="imu" x="50" y="215" width="170" height="120" rx="8"/>
+  <text class="t" x="135" y="240">Residual SE stack</text>
+  <text class="s" x="135" y="265">→ 64 (k=1)</text>
+  <text class="s" x="135" y="287">→ 128 (k=3)</text>
+  <text class="s" x="135" y="309">→ 256 (k=5)</text>
+  <rect class="imu" x="245" y="215" width="170" height="120" rx="8"/>
+  <text class="t" x="330" y="240">Residual SE stack</text>
+  <text class="s" x="330" y="265">→ 64 (k=1)</text>
+  <text class="s" x="330" y="287">→ 128 (k=3)</text>
+  <text class="s" x="330" y="309">→ 256 (k=5)</text>
+  <rect class="imu" x="440" y="215" width="170" height="120" rx="8"/>
+  <text class="t" x="525" y="240">Residual SE stack</text>
+  <text class="s" x="525" y="265">→ 64 (k=1)</text>
+  <text class="s" x="525" y="287">→ 128 (k=3)</text>
+  <text class="s" x="525" y="309">→ 256 (k=5)</text>
+
+  <path class="flow" d="M135 335 V355 H270 V375"/>
+  <path class="flow" d="M330 335 V375"/>
+  <path class="flow" d="M525 335 V355 H390 V375"/>
+
+  <rect class="fuse" x="130" y="375" width="400" height="55" rx="8"/>
+  <text class="t" x="330" y="398">IMU fusion</text>
+  <text class="s" x="330" y="417">Residual SE block, 768 → 256 (k=3)</text>
+
+  <!-- ToF lane -->
+  <rect x="650" y="85" width="420" height="365" rx="14" fill="#fffbeb" stroke="#fde68a"/>
+  <text class="lane" x="670" y="110" style="fill:#b45309">TIME-OF-FLIGHT BRANCH (ONE PATH PER SENSOR, × 5)</text>
+
+  <rect class="tof" x="670" y="125" width="380" height="62" rx="8"/>
+  <text class="t" x="860" y="151">ToF sensors (5 × 64 = 320)</text>
+  <text class="s" x="860" y="171">each sensor is an 8 × 8 grid at every timestep</text>
+
+  <path class="flow" d="M860 187 V205"/>
+  <rect class="tof" x="670" y="205" width="380" height="60" rx="8"/>
+  <text class="t" x="860" y="230">2D CNN on each frame</text>
+  <text class="s" x="860" y="250">1 → 16 → 32 → 64 (k=1, 3, 5), then spatial mean</text>
+
+  <path class="flow" d="M860 265 V285"/>
+  <rect class="tof" x="670" y="285" width="380" height="60" rx="8"/>
+  <text class="t" x="860" y="310">Residual SE stack over time</text>
+  <text class="s" x="860" y="330">64 → 128 (k=3) → 256 (k=5)</text>
+
+  <path class="flow" d="M860 345 V375"/>
+  <rect class="fuse" x="670" y="375" width="380" height="55" rx="8"/>
+  <text class="t" x="860" y="398">ToF fusion</text>
+  <text class="s" x="860" y="417">Residual SE block, 256 × 5 = 1280 → 32 (k=3)</text>
+
+  <!-- Feature fusion -->
+  <path class="flow" d="M330 430 V470 H470 V490"/>
+  <path class="flow" d="M860 430 V470 H630 V490"/>
+  <rect class="fuse" x="350" y="490" width="400" height="50" rx="8"/>
+  <text class="t" x="550" y="511">Concatenate at every timestep</text>
+  <text class="s" x="550" y="529">256 + 32 = 288 channels</text>
+
+  <path class="line" d="M550 540 V558"/>
+  <path class="flow" d="M550 558 H200 V580"/>
+  <path class="flow" d="M550 558 H730 V575"/>
+
+  <!-- Phase head -->
+  <rect class="ph" x="60" y="580" width="280" height="70" rx="8"/>
+  <text class="t" x="200" y="608">Phase head</text>
+  <text class="s" x="200" y="630">Linear 288 → 3, softmax per timestep</text>
+
+  <path class="phase" d="M340 620 H400"/>
+  <text class="note" x="370" y="609">weights</text>
+
+  <!-- Attention pooling -->
+  <rect x="400" y="575" width="660" height="110" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.3"/>
+  <text class="lane" x="730" y="596" text-anchor="middle" style="fill:#6d28d9;text-anchor:middle">PHASE-AWARE ATTENTION POOLING</text>
+  <rect class="ph" x="415" y="606" width="200" height="66" rx="8"/>
+  <text class="t" x="515" y="632">Phase 1 attention</text>
+  <text class="s" x="515" y="652">moves hand to target</text>
+  <rect class="ph" x="630" y="606" width="200" height="66" rx="8"/>
+  <text class="t" x="730" y="632">Phase 2 attention</text>
+  <text class="s" x="730" y="652">hand at target</text>
+  <rect class="ph" x="845" y="606" width="200" height="66" rx="8"/>
+  <text class="t" x="945" y="632">Phase 3 attention</text>
+  <text class="s" x="945" y="652">performs gesture</text>
+
+  <!-- Auxiliary output -->
+  <path class="flow" d="M200 650 V715"/>
+  <rect class="out" x="60" y="715" width="280" height="46" rx="8"/>
+  <text class="t" x="200" y="735">Phase logits</text>
+  <text class="s" x="200" y="752">auxiliary phase loss at training time</text>
+
+  <!-- Classifier -->
+  <path class="flow" d="M730 685 V715"/>
+  <rect class="fuse" x="530" y="715" width="400" height="46" rx="8"/>
+  <text class="t" x="730" y="735">Concatenate phases</text>
+  <text class="s" x="730" y="752">288 × 3 = 864</text>
+
+  <path class="flow" d="M730 761 V785"/>
+  <rect class="fuse" x="530" y="785" width="400" height="46" rx="8"/>
+  <text class="t" x="730" y="805">Dense 864 → 512</text>
+  <text class="s" x="730" y="822">BatchNorm, ReLU, dropout 0.5</text>
+
+  <path class="flow" d="M730 831 V855"/>
+  <rect class="fuse" x="530" y="855" width="400" height="46" rx="8"/>
+  <text class="t" x="730" y="875">Dense 512 → 256</text>
+  <text class="s" x="730" y="892">BatchNorm, ReLU, dropout 0.3</text>
+
+  <path class="flow" d="M730 901 V925"/>
+  <rect class="out" x="530" y="925" width="400" height="46" rx="8"/>
+  <text class="t" x="730" y="945">Gesture logits</text>
+  <text class="s" x="730" y="962">orientation × gesture × first-phase behavior classes</text>
+
+  <!-- Legend -->
+  <rect x="60" y="800" width="400" height="171" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text class="lt" x="80" y="829">Inside a Residual SE block</text>
+  <text class="l" x="80" y="856">Conv1d → masked BatchNorm → ReLU</text>
+  <text class="l" x="80" y="879">Conv1d → masked BatchNorm → SE attention</text>
+  <text class="l" x="80" y="902">Add a 1 × 1 conv shortcut → ReLU → dropout</text>
+  <text class="l" x="80" y="925">k = kernel size of both convolutions</text>
+  <text class="l" x="80" y="948">Padding is masked out at every step</text>
+</svg>
